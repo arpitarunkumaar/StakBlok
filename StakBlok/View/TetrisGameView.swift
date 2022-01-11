@@ -8,8 +8,38 @@
 import SwiftUI
 
 struct TetrisGameView: View {
+    @ObservedObject var tetrisGame = TetrisGameViewModel()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        GeometryReader{(geometry : GeometryProxy) in
+        self.drawBoard(bouncingRect: geometry.size)
+        }
+    }
+
+    func drawBoard(bouncingRect:CGSize) -> some View{
+        let columns = self.tetrisGame.numberOfColumns
+        let rows = self.tetrisGame.numberOfRows
+        let blockSize = min(bouncingRect.width/CGFloat(columns), bouncingRect.height/CGFloat(rows))
+        let xoffset = (bouncingRect.width - blockSize*CGFloat(columns))/2  // horizontal padding
+        let yoffset = (bouncingRect.height - blockSize*CGFloat(rows))/2 // vertical padding
+        
+        return ForEach(0...columns-1, id: \.self) { (column:Int) in // iterating over all colns and rows
+            ForEach(0...rows-1, id: \.self) { (row:Int) in
+                
+                Path { path in
+                let x = xoffset + blockSize * CGFloat(column)
+                let y = bouncingRect.height - yoffset - blockSize * CGFloat(row+1)
+                let rect = CGRect(x:x, y:y, width:blockSize, height:blockSize)
+                    path.addRect(rect)
+                }
+                .fill(self.tetrisGame.gameBoard[column][row].color)
+                .onTapGesture {
+                    self.tetrisGame.squareOnClick(row: row, column: column)
+                }
+                
+            }
+            
+        }
     }
 }
 

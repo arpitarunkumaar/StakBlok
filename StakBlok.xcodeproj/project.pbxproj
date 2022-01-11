@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		91851894278D2F9E003C95B1 /* TetrisGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91851893278D2F9E003C95B1 /* TetrisGameViewModel.swift */; };
 		91E9EE06278D2CAB004C5B8C /* StakBlokApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E9EE05278D2CAB004C5B8C /* StakBlokApp.swift */; };
 		91E9EE08278D2CAB004C5B8C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E9EE07278D2CAB004C5B8C /* ContentView.swift */; };
 		91E9EE0A278D2CAC004C5B8C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91E9EE09278D2CAC004C5B8C /* Assets.xcassets */; };
@@ -14,6 +15,8 @@
 		91E9EE17278D2CAC004C5B8C /* StakBlokTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E9EE16278D2CAC004C5B8C /* StakBlokTests.swift */; };
 		91E9EE21278D2CAC004C5B8C /* StakBlokUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E9EE20278D2CAC004C5B8C /* StakBlokUITests.swift */; };
 		91E9EE23278D2CAC004C5B8C /* StakBlokUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E9EE22278D2CAC004C5B8C /* StakBlokUITestsLaunchTests.swift */; };
+		91FB5462278D389C000D40D4 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FB5461278D389C000D40D4 /* Color.swift */; };
+		91FB5467278D399B000D40D4 /* TetrisGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FB5466278D399B000D40D4 /* TetrisGameView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		91851893278D2F9E003C95B1 /* TetrisGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetrisGameViewModel.swift; sourceTree = "<group>"; };
 		91E9EE02278D2CAB004C5B8C /* StakBlok.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StakBlok.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91E9EE05278D2CAB004C5B8C /* StakBlokApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakBlokApp.swift; sourceTree = "<group>"; };
 		91E9EE07278D2CAB004C5B8C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -44,6 +48,8 @@
 		91E9EE1C278D2CAC004C5B8C /* StakBlokUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StakBlokUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		91E9EE20278D2CAC004C5B8C /* StakBlokUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakBlokUITests.swift; sourceTree = "<group>"; };
 		91E9EE22278D2CAC004C5B8C /* StakBlokUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakBlokUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		91FB5461278D389C000D40D4 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		91FB5466278D399B000D40D4 /* TetrisGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetrisGameView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +77,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		91851892278D2F63003C95B1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				91851893278D2F9E003C95B1 /* TetrisGameViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		91E9EDF9278D2CAB004C5B8C = {
 			isa = PBXGroup;
 			children = (
@@ -94,6 +108,9 @@
 		91E9EE04278D2CAB004C5B8C /* StakBlok */ = {
 			isa = PBXGroup;
 			children = (
+				91FB5465278D3981000D40D4 /* View */,
+				91FB5460278D387E000D40D4 /* Extension */,
+				91851892278D2F63003C95B1 /* ViewModel */,
 				91E9EE05278D2CAB004C5B8C /* StakBlokApp.swift */,
 				91E9EE07278D2CAB004C5B8C /* ContentView.swift */,
 				91E9EE09278D2CAC004C5B8C /* Assets.xcassets */,
@@ -125,6 +142,22 @@
 				91E9EE22278D2CAC004C5B8C /* StakBlokUITestsLaunchTests.swift */,
 			);
 			path = StakBlokUITests;
+			sourceTree = "<group>";
+		};
+		91FB5460278D387E000D40D4 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				91FB5461278D389C000D40D4 /* Color.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		91FB5465278D3981000D40D4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				91FB5466278D399B000D40D4 /* TetrisGameView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,7 +291,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				91E9EE08278D2CAB004C5B8C /* ContentView.swift in Sources */,
+				91FB5467278D399B000D40D4 /* TetrisGameView.swift in Sources */,
+				91FB5462278D389C000D40D4 /* Color.swift in Sources */,
 				91E9EE06278D2CAB004C5B8C /* StakBlokApp.swift in Sources */,
+				91851894278D2F9E003C95B1 /* TetrisGameViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
