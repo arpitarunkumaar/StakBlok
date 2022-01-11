@@ -12,12 +12,14 @@ class TetrisGameModel: ObservableObject
     var numberOfRows: Int
     var numberOfColumns: Int
     @Published var gameBoard: [[TetrisGameBlock?]]
+    @Published var tetrimino: Tetrimino?
 
     init(numberOfRows: Int = 23, numberOfColumns: Int = 10)
     {
          self.numberOfRows = numberOfRows
          self.numberOfColumns = numberOfColumns
          gameBoard = Array(repeating: Array(repeating: nil, count: numberOfRows), count: numberOfColumns)
+        tetrimino = Tetrimino(origin: BlockLocation(Row: 22, Column: 4), blockType: .i)
     }
     
     func blockClicked(row: Int, column: Int)
@@ -41,4 +43,25 @@ struct TetrisGameBlock
 enum BlockType: CaseIterable
 {
     case i,o,t,j,l,s,z
+}
+
+struct Tetrimino
+{
+    var origin: BlockLocation
+    var blockType: BlockType
+    var blocks: [BlockLocation]
+    {
+        [
+            BlockLocation(Row: 0, Column: -1),
+            BlockLocation(Row: 0, Column: 0),
+            BlockLocation(Row: 0, Column: 1),
+            BlockLocation(Row: 0, Column: 2),
+        ]
+    }
+}
+
+struct BlockLocation
+{
+    var Row: Int
+    var Column: Int
 }

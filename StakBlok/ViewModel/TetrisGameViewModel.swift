@@ -16,7 +16,15 @@ class TetrisGameViewModel: ObservableObject
     var numberOfColumns: Int {tetrisGameModel.numberOfColumns}
     var gameBoard: [[TetrisBlock]]
     {
-        tetrisGameModel.gameBoard.map {$0.map(convertToSquare)}
+        var board = tetrisGameModel.gameBoard.map {$0.map(convertToSquare) }
+        if let tetrimino = tetrisGameModel.tetrimino
+        {
+            for blockLocation in tetrimino.blocks
+            {
+                board[blockLocation.Column + tetrimino.origin.Column][blockLocation.Row + tetrimino.origin.Row] = TetrisBlock(color: getColor(blockType: tetrimino.blockType))
+            }
+        }
+        return board
     }
     
     var anyCancellable:AnyCancellable?
