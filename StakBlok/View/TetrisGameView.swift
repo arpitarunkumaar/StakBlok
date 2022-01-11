@@ -7,16 +7,19 @@
 
 import SwiftUI
 
-struct TetrisGameView: View {
+struct TetrisGameView: View
+{
     @ObservedObject var tetrisGame = TetrisGameViewModel()
     
-    var body: some View {
+    var body: some View
+    {
         GeometryReader{(geometry : GeometryProxy) in
         self.drawBoard(bouncingRect: geometry.size)
         }
     }
 
-    func drawBoard(bouncingRect:CGSize) -> some View{
+    func drawBoard(bouncingRect:CGSize) -> some View
+    {
         let columns = self.tetrisGame.numberOfColumns
         let rows = self.tetrisGame.numberOfRows
         let blockSize = min(bouncingRect.width/CGFloat(columns), bouncingRect.height/CGFloat(rows))

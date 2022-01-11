@@ -6,30 +6,64 @@
 //
 
 import SwiftUI
+import Combine
 
-class TetrisGameViewModel: ObservableObject {
-     var numberOfRows: Int
-     var numberOfColumns: Int
-     @Published var gameBoard: [[TetrisBlock]]
-
-     init(numberOfRows: Int = 23, numberOfColumns: Int = 10) {
-          self.numberOfRows = numberOfRows
-          self.numberOfColumns = numberOfColumns
-          gameBoard = Array(repeating: Array(repeating: TetrisBlock(color:Color.tetrisBlack), count: numberOfRows), count: numberOfColumns)
-     }
-
-
-func squareOnClick(row: Int, column: Int) {
-    print("Column: \(column), Row: \(row)")
-        if gameBoard[column][row].color == Color.tetrisBlack {
-            gameBoard[column][row].color = Color.tetrisRed
-        }   else {
-            gameBoard[column][row].color = Color.tetrisBlack
+class TetrisGameViewModel: ObservableObject
+{
+    @Published var tetrisGameModel = TetrisGameModel()
+    
+    var numberOfRows: Int {tetrisGameModel.numberOfRows}
+    var numberOfColumns: Int {tetrisGameModel.numberOfColumns}
+    var gameBoard: [[TetrisBlock]]
+    {
+        tetrisGameModel.gameBoard.map {$0.map(convertToSquare)}
+    }
+    
+    var anyCancellable:AnyCancellable?
+    
+    init()
+    {
+        anyCancellable = tetrisGameModel.objectWillChange.sink
+        {
+            self.objectWillChange.send()
+        }
+    }
+    
+    func convertToSquare(block:TetrisGameBlock?) -> TetrisBlock
+    {
+        return TetrisBlock(color: getColor(blockType: block?.blocktype))
+    }
+    
+    func getColor (blockType: BlockType?) -> Color
+    {
+        switch blockType
+        {
+        case .i:
+            return .tetrisPurple
+        case .j:
+            return .tetrisOrange
+        case .l:
+            return .tetrisYellow
+        case .o:
+            return .tetrisDarkBlue
+        case .s:
+            return .tetrisGreen
+        case .t:
+            return .tetrisRed
+        case .z:
+            return .tetrisLightBlue
+        case .none:
+            return .tetrisBlack
         }
     }
 
+    func squareOnClick(row: Int, column: Int)
+    {
+        tetrisGameModel.blockClicked(row: row, column: column)
+    }
 }
 
-struct TetrisBlock {
+struct TetrisBlock
+{
      var color: Color
 }

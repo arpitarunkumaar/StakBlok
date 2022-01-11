@@ -17,6 +17,7 @@
 		91E9EE23278D2CAC004C5B8C /* StakBlokUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E9EE22278D2CAC004C5B8C /* StakBlokUITestsLaunchTests.swift */; };
 		91FB5462278D389C000D40D4 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FB5461278D389C000D40D4 /* Color.swift */; };
 		91FB5467278D399B000D40D4 /* TetrisGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FB5466278D399B000D40D4 /* TetrisGameView.swift */; };
+		91FB546A278D4BF0000D40D4 /* TetrisGameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FB5469278D4BF0000D40D4 /* TetrisGameModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		91E9EE22278D2CAC004C5B8C /* StakBlokUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakBlokUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		91FB5461278D389C000D40D4 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		91FB5466278D399B000D40D4 /* TetrisGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetrisGameView.swift; sourceTree = "<group>"; };
+		91FB5469278D4BF0000D40D4 /* TetrisGameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetrisGameModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +110,7 @@
 		91E9EE04278D2CAB004C5B8C /* StakBlok */ = {
 			isa = PBXGroup;
 			children = (
+				91FB5468278D4BDF000D40D4 /* Model */,
 				91FB5465278D3981000D40D4 /* View */,
 				91FB5460278D387E000D40D4 /* Extension */,
 				91851892278D2F63003C95B1 /* ViewModel */,
@@ -158,6 +161,14 @@
 				91FB5466278D399B000D40D4 /* TetrisGameView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		91FB5468278D4BDF000D40D4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				91FB5469278D4BF0000D40D4 /* TetrisGameModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -292,6 +303,7 @@
 			files = (
 				91E9EE08278D2CAB004C5B8C /* ContentView.swift in Sources */,
 				91FB5467278D399B000D40D4 /* TetrisGameView.swift in Sources */,
+				91FB546A278D4BF0000D40D4 /* TetrisGameModel.swift in Sources */,
 				91FB5462278D389C000D40D4 /* Color.swift in Sources */,
 				91E9EE06278D2CAB004C5B8C /* StakBlokApp.swift in Sources */,
 				91851894278D2F9E003C95B1 /* TetrisGameViewModel.swift in Sources */,
