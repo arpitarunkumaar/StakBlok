@@ -24,7 +24,7 @@ class TetrisGameModel: ObservableObject
         gameBoard = Array(repeating: Array(repeating: nil, count: numberOfRows), count: numberOfColumns)
         tetromino = Tetromino(origin: BlockLocation(Row: 22, Column: 4), blockType: .i)
         
-        speed = 0.1
+        speed = 0.5
         resumeGame()
         
     }
@@ -55,7 +55,7 @@ class TetrisGameModel: ObservableObject
     func runEngine (timer: Timer)
     {
         // spawn a new block when needed
-        guard let currentTetromino = tetromino else
+        guard tetromino != nil else
         {
             print("spawning new tertominos!")
             tetromino = Tetromino.createNewTetromino(numberOfRows: numberOfRows, numberOfColumns: numberOfColumns)
@@ -71,11 +71,9 @@ class TetrisGameModel: ObservableObject
         
         // see about moving blocks down
         
-        let newTetromino = currentTetromino.moveBy(row: -1, column: 0)
-        if isValidTetromino(testTetromino: newTetromino)
+        if moveTetrominoDown()
         {
-            print("moving tetrominos down!")
-            tetromino = newTetromino
+            print("moving tetromino down!")
             return
         }
         
@@ -84,6 +82,41 @@ class TetrisGameModel: ObservableObject
         print("placing tetrominos!")
         placeTetromino()
     }
+    
+    func dropTetromino()
+    {
+        while(moveTetrominoDown()) { }
+    }
+    
+    func moveTetrominoRight() -> Bool
+    {
+        return moveTetromino(rowOffset: 0, columnOffset: 1)
+    }
+    
+    func moveTetrominoLeft() -> Bool
+    {
+        return moveTetromino(rowOffset: 0, columnOffset: -1)
+    }
+    
+    func moveTetrominoDown() -> Bool
+    {
+        return moveTetromino(rowOffset: -1, columnOffset: 0)
+    }
+    
+    func moveTetromino(rowOffset: Int, columnOffset: Int) -> Bool
+    {
+        guard let currentTetromino = tetromino else {return false}
+        
+        let newTetromino = currentTetromino.moveBy(row: rowOffset, column: columnOffset)
+        if isValidTetromino(testTetromino: newTetromino)
+        {
+            print("moving tetrominos down!")
+            tetromino = newTetromino
+            return true
+        }
+        return false
+    }
+    
     
     func isValidTetromino(testTetromino: Tetromino) -> Bool
     {

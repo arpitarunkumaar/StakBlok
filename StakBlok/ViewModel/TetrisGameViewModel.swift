@@ -27,7 +27,8 @@ class TetrisGameViewModel: ObservableObject
         return board
     }
     
-    var anyCancellable:AnyCancellable?
+    var anyCancellable: AnyCancellable?
+    var lastMoveLocation: CGPoint?
     
     init()
     {
@@ -68,6 +69,61 @@ class TetrisGameViewModel: ObservableObject
     func squareOnClick(row: Int, column: Int)
     {
         tetrisGameModel.blockClicked(row: row, column: column)
+    }
+    
+    func getMoveGesture() -> some Gesture
+    {
+        return DragGesture()
+        .onChanged(onMoveChange(value:))
+        .onEnded(onMoveEnded(_:))
+    }
+    
+    func onMoveChange(value: DragGesture.Value)
+    {
+        guard let start = lastMoveLocation else
+        {
+            lastMoveLocation = value.location
+            return
+        }
+        
+        let xDiff = value.location.x - start.x
+        if xDiff > 10 //when swiped right
+        {
+            print("moving right!!")
+            let _ = tetrisGameModel.moveTetrominoRight()
+            lastMoveLocation = value.location
+            return
+        }
+        
+        if xDiff < -10 //when swiped left
+        {
+            print("moving right!!")
+            let _ = tetrisGameModel.moveTetrominoLeft()
+            lastMoveLocation = value.location
+            return
+        }
+        
+        let yDiff = value.location.y - start.y
+        if yDiff > 10 //drag up to drop all the way down
+        {
+            print("dropping!!")
+            tetrisGameModel.dropTetromino()
+            lastMoveLocation = value.location
+            return
+        }
+        
+        if yDiff > 10 //when swiped down
+        {
+            print("moving down!!")
+            let _ = tetrisGameModel.moveTetrominoDown()
+            lastMoveLocation = value.location
+            return
+        }
+    }
+    
+    func onMoveEnded(_: DragGesture.Value) //when finger taken off the screen, reset value to nil
+    {
+        lastMoveLocation = nil
     }
 }
 

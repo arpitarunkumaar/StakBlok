@@ -16,6 +16,7 @@ struct TetrisGameView: View
         GeometryReader{(geometry : GeometryProxy) in
         self.drawBoard(bouncingRect: geometry.size)
         }
+        .gesture(tetrisGame.getMoveGesture())
     }
 
     func drawBoard(bouncingRect:CGSize) -> some View
