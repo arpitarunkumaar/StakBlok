@@ -17,6 +17,15 @@ class TetrisGameViewModel: ObservableObject
     var gameBoard: [[TetrisBlock]]
     {
         var board = tetrisGameModel.gameBoard.map {$0.map(convertToSquare) }
+        
+        if let shadow = tetrisGameModel.Shadow
+        {
+            for blockLocation in shadow.blocks
+            {
+                board[blockLocation.Column + shadow.origin.Column][blockLocation.Row + shadow.origin.Row] = TetrisBlock(color: getShadowColor(blockType: shadow.blockType))
+            }
+        }
+        
         if let tetromino = tetrisGameModel.tetromino
         {
             for blockLocation in tetromino.blocks
@@ -24,6 +33,7 @@ class TetrisGameViewModel: ObservableObject
                 board[blockLocation.Column + tetromino.origin.Column][blockLocation.Row + tetromino.origin.Row] = TetrisBlock(color: getColor(blockType: tetromino.blockType))
             }
         }
+        
         return board
     }
     
@@ -65,6 +75,30 @@ class TetrisGameViewModel: ObservableObject
             return .tetrisBlack
         }
     }
+    
+    func getShadowColor (blockType: BlockType?) -> Color
+    {
+        switch blockType
+        {
+        case .i:
+            return .tetrisPurpleShadow
+        case .j:
+            return .tetrisOrangeShadow
+        case .l:
+            return .tetrisYellowShadow
+        case .o:
+            return .tetrisDarkBlueShadow
+        case .s:
+            return .tetrisGreenShadow
+        case .t:
+            return .tetrisRedShadow
+        case .z:
+            return .tetrisLightBlueShadow
+        case .none:
+            return .tetrisBlack
+        }
+    }
+    
 
     func squareOnClick(row: Int, column: Int)
     {

@@ -26,6 +26,7 @@ struct TetrisGameView: View
         let blockSize = min(bouncingRect.width/CGFloat(columns), bouncingRect.height/CGFloat(rows))
         let xoffset = (bouncingRect.width - blockSize*CGFloat(columns))/2  // horizontal padding
         let yoffset = (bouncingRect.height - blockSize*CGFloat(rows))/2 // vertical padding
+        let gameBoard = self.tetrisGame.gameBoard
         
         return ForEach(0...columns-1, id: \.self) { (column:Int) in // iterating over all colns and rows
             ForEach(0...rows-1, id: \.self) { (row:Int) in
@@ -36,7 +37,7 @@ struct TetrisGameView: View
                 let rect = CGRect(x:x, y:y, width:blockSize, height:blockSize)
                     path.addRect(rect)
                 }
-                .fill(self.tetrisGame.gameBoard[column][row].color)
+                .fill(gameBoard[column][row].color)
                 .onTapGesture {
                     self.tetrisGame.squareOnClick(row: row, column: column)
                 }

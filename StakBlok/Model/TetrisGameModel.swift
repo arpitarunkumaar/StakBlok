@@ -16,6 +16,19 @@ class TetrisGameModel: ObservableObject
     
     var timer: Timer?
     var speed: Double
+    
+    var Shadow: Tetromino? // block drop location hint
+    {
+        guard var lastShadow = tetromino else { return nil }
+        var testShadow = lastShadow
+        while (isValidTetromino(testTetromino: testShadow))
+        {
+            lastShadow = testShadow
+            testShadow = lastShadow.moveBy(row: -1, column: 0)
+        }
+        
+        return lastShadow
+    }
 
     init(numberOfRows: Int = 23, numberOfColumns: Int = 10)
     {
