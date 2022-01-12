@@ -17,11 +17,11 @@ class TetrisGameViewModel: ObservableObject
     var gameBoard: [[TetrisBlock]]
     {
         var board = tetrisGameModel.gameBoard.map {$0.map(convertToSquare) }
-        if let tetrimino = tetrisGameModel.tetrimino
+        if let tetromino = tetrisGameModel.tetromino
         {
-            for blockLocation in tetrimino.blocks
+            for blockLocation in tetromino.blocks
             {
-                board[blockLocation.Column + tetrimino.origin.Column][blockLocation.Row + tetrimino.origin.Row] = TetrisBlock(color: getColor(blockType: tetrimino.blockType))
+                board[blockLocation.Column + tetromino.origin.Column][blockLocation.Row + tetromino.origin.Row] = TetrisBlock(color: getColor(blockType: tetromino.blockType))
             }
         }
         return board
