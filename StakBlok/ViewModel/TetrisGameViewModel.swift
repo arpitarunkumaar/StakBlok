@@ -104,18 +104,18 @@ class TetrisGameViewModel: ObservableObject
         }
         
         let yDiff = value.location.y - start.y
-        if yDiff > 10 //drag up to drop all the way down
-        {
-            print("dropping!!")
-            tetrisGameModel.dropTetromino()
-            lastMoveLocation = value.location
-            return
-        }
-        
         if yDiff > 10 //when swiped down
         {
             print("moving down!!")
             let _ = tetrisGameModel.moveTetrominoDown()
+            lastMoveLocation = value.location
+            return
+        }
+        
+        if yDiff < -10 //drag up to drop all the way down
+        {
+            print("dropping!!")
+            tetrisGameModel.dropTetromino()
             lastMoveLocation = value.location
             return
         }
