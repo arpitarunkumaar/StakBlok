@@ -17,6 +17,7 @@ struct TetrisGameView: View
         self.drawBoard(bouncingRect: geometry.size)
         }
         .gesture(tetrisGame.getMoveGesture())
+        .gesture(tetrisGame.getRotateGesture())
     }
 
     func drawBoard(bouncingRect:CGSize) -> some View
@@ -37,11 +38,8 @@ struct TetrisGameView: View
                 let rect = CGRect(x:x, y:y, width:blockSize, height:blockSize)
                     path.addRect(rect)
                 }
-                .fill(gameBoard[column][row].color)
-                .onTapGesture {
-                    self.tetrisGame.squareOnClick(row: row, column: column)
-                }
                 
+                .fill(gameBoard[column][row].color)
             }
             
         }

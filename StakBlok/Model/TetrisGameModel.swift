@@ -35,23 +35,10 @@ class TetrisGameModel: ObservableObject
         self.numberOfRows = numberOfRows
         self.numberOfColumns = numberOfColumns
         gameBoard = Array(repeating: Array(repeating: nil, count: numberOfRows), count: numberOfColumns)
-        tetromino = Tetromino(origin: BlockLocation(Row: 22, Column: 4), blockType: .i)
         
         speed = 0.5
         resumeGame()
         
-    }
-    
-    func blockClicked(row: Int, column: Int)
-    {
-        print("Column: \(column), Row: \(row)")
-        if gameBoard[column][row] == nil
-        {
-            gameBoard[column][row] = TetrisGameBlock(blocktype: BlockType.allCases.randomElement()!)
-        } else
-        {
-            gameBoard[column][row] = nil
-        }
     }
     
     func resumeGame()
@@ -137,6 +124,20 @@ class TetrisGameModel: ObservableObject
         return false
     }
     
+    func rotateTetromino(clockwise: Bool)
+    {
+        guard let currentTetromino = tetromino else
+        {
+            return
+        }
+        
+        let newTetromino = currentTetromino.rotate(clockwise: clockwise)
+        
+        if isValidTetromino(testTetromino: newTetromino)
+        {
+            tetromino = newTetromino
+        }
+    }
     
     func isValidTetromino(testTetromino: Tetromino) -> Bool
     {
@@ -233,70 +234,72 @@ struct Tetromino
 {
     var origin: BlockLocation
     var blockType: BlockType
+    var rotation: Int
     var blocks: [BlockLocation]
     {
-        return Tetromino.getBlocks(blockType: blockType)
+        return Tetromino.getBlocks(blockType: blockType, rotation: rotation)
     }
     
     func moveBy(row: Int, column: Int) -> Tetromino
     {
         let newOrigin = BlockLocation(Row: origin.Row + row, Column: origin.Column + column)
-        return Tetromino(origin: newOrigin, blockType: blockType)
+        return Tetromino(origin: newOrigin, blockType: blockType, rotation: rotation)
     }
     
-    static func getBlocks(blockType: BlockType) -> [BlockLocation]
+    func rotate (clockwise: Bool) -> Tetromino
+    {
+        return Tetromino(origin: origin, blockType: blockType, rotation: rotation + (clockwise ? 1 : -1))
+    }
+    
+    static func getBlocks(blockType: BlockType, rotation: Int = 0) -> [BlockLocation]
+    {
+        let allBlocks = getAllBlocks(blockType: blockType)
+        var index = rotation % allBlocks.count
+        
+        if (index < 0)
+        {
+            index += allBlocks.count
+        }
+        
+        return allBlocks[index]
+    }
+    
+    static func getAllBlocks(blockType: BlockType) -> [[BlockLocation]]
     {
         switch blockType {
-        case .i:
-            return [
-                BlockLocation(Row: 0, Column: -1),
-                BlockLocation(Row: 0, Column: 0),
-                BlockLocation(Row: 0, Column: 1),
-                BlockLocation(Row: 0, Column: 2),
-            ]
-        case .o:
-            return [
-                BlockLocation(Row: 0, Column: 0),
-                BlockLocation(Row: 0, Column: 1),
-                BlockLocation(Row: 1, Column: 1),
-                BlockLocation(Row: 1, Column: 0)
-            ]
-        case .t:
-            return [
-                BlockLocation(Row: 0, Column: -1),
-                BlockLocation(Row: 0, Column: 0),
-                BlockLocation(Row: 0, Column: 1),
-                BlockLocation(Row: 1, Column: 0),
-            ]
-        case .j:
-            return [
-                BlockLocation(Row: 1, Column: -1),
-                BlockLocation(Row: 0, Column: -1),
-                BlockLocation(Row: 0, Column: 0),
-                BlockLocation(Row: 0, Column: 1),
-            ]
-        case .l:
-            return [
-                BlockLocation(Row: 0, Column: -1),
-                BlockLocation(Row: 0, Column: 0),
-                BlockLocation(Row: 0, Column: 1),
-                BlockLocation(Row: 1, Column: 1),
-            ]
-        case .s:
-            return [
-                BlockLocation(Row: 0, Column: -1),
-                BlockLocation(Row: 0, Column: 0),
-                BlockLocation(Row: 1, Column: 0),
-                BlockLocation(Row: 1, Column: 1),
-            ]
-        case .z:
-            return [
-                BlockLocation(Row: -1, Column: 0),
-                BlockLocation(Row: 0, Column: 0),
-                BlockLocation(Row: 0, Column: -1),
-                BlockLocation(Row: -1, Column: 1),
-            ]
-        }
+                case .i:
+            return [[BlockLocation(Row: 0, Column: -1), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: 1), BlockLocation(Row: 0, Column: 2)],
+                    [BlockLocation(Row: -1, Column: 1), BlockLocation(Row: 0, Column: 1), BlockLocation(Row: 1, Column: 1), BlockLocation(Row: -2, Column: 1)],
+                    [BlockLocation(Row: -1, Column: -1), BlockLocation(Row: -1, Column: 0), BlockLocation(Row: -1, Column: 1), BlockLocation(Row: -1, Column: 2)],
+                    [BlockLocation(Row: -1, Column: 0), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 1, Column: 0), BlockLocation(Row: -2, Column: 0)]]
+                case .o:
+            return [[BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: 1), BlockLocation(Row: 1, Column: 1), BlockLocation(Row: 1, Column: 0)]]
+                case .t:
+            return [[BlockLocation(Row: 0, Column: -1), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: 1), BlockLocation(Row: 1, Column: 0)],
+                    [BlockLocation(Row: -1, Column: 0), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: 1), BlockLocation(Row: 1, Column: 0)],
+                    [BlockLocation(Row: 0, Column: -1), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: 1), BlockLocation(Row: -1, Column: 0)],
+                    [BlockLocation(Row: 0, Column: -1), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 1, Column: 0), BlockLocation(Row: -1, Column: 0)]]
+                case .j:
+            return [[BlockLocation(Row: 1, Column: -1), BlockLocation(Row: 0, Column: -1), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: 1)],
+                    [BlockLocation(Row: 1, Column: 0), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: -1, Column: 0), BlockLocation(Row: 1, Column: 1)],
+                    [BlockLocation(Row: -1, Column: 1), BlockLocation(Row: 0, Column: -1), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: 1)],
+                    [BlockLocation(Row: 1, Column: 0), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: -1, Column: 0), BlockLocation(Row: -1, Column: -1)]]
+                case .l:
+            return [[BlockLocation(Row: 0, Column: -1), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: 1), BlockLocation(Row: 1, Column: 1)],
+                    [BlockLocation(Row: 1, Column: 0), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: -1, Column: 0), BlockLocation(Row: -1, Column: 1)],
+                    [BlockLocation(Row: 0, Column: -1), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: 1), BlockLocation(Row: -1, Column: -1)],
+                    [BlockLocation(Row: 1, Column: 0), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: -1, Column: 0), BlockLocation(Row: 1, Column: -1)]]
+                case .s:
+            return [[BlockLocation(Row: 0, Column: -1), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 1, Column: 0), BlockLocation(Row: 1, Column: 1)],
+                    [BlockLocation(Row: 1, Column: 0), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: 1), BlockLocation(Row: -1, Column: 1)],
+                    [BlockLocation(Row: 0, Column: 1), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: -1, Column: 0), BlockLocation(Row: -1, Column: -1)],
+                    [BlockLocation(Row: 1, Column: -1), BlockLocation(Row: 0, Column: -1), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: -1, Column: 0)]]
+                case .z:
+            return [[BlockLocation(Row: 1, Column: -1), BlockLocation(Row: 1, Column: 0), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: 1)],
+                    [BlockLocation(Row: 1, Column: 1), BlockLocation(Row: 0, Column: 1), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: -1, Column: 0)],
+                    [BlockLocation(Row: 0, Column: -1), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: -1, Column: 0), BlockLocation(Row: -1, Column: 1)],
+                    [BlockLocation(Row: 1, Column: 0), BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: -1), BlockLocation(Row: -1, Column: -1)]]
+                }
     }
     
     static func createNewTetromino(numberOfRows: Int, numberOfColumns: Int) -> Tetromino
@@ -310,7 +313,7 @@ struct Tetromino
         }
         
         let origin = BlockLocation(Row: numberOfRows - 1 - maxRow, Column: (numberOfColumns - 1)/2)
-        return Tetromino(origin: origin, blockType: blockType)
+        return Tetromino(origin: origin, blockType: blockType, rotation: 0)
     }
 }
 
