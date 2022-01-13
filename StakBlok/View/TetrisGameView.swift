@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct TetrisGameView: View
 {
@@ -13,11 +14,15 @@ struct TetrisGameView: View
     
     var body: some View
     {
+        ZStack
+        {
+            Color.black.ignoresSafeArea()
         GeometryReader{(geometry : GeometryProxy) in
         self.drawBoard(bouncingRect: geometry.size)
         }
         .gesture(tetrisGame.getMoveGesture())
         .gesture(tetrisGame.getRotateGesture())
+        }
     }
 
     func drawBoard(bouncingRect:CGSize) -> some View
