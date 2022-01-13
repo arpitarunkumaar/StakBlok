@@ -131,11 +131,17 @@ class TetrisGameModel: ObservableObject
             return
         }
         
-        let newTetromino = currentTetromino.rotate(clockwise: clockwise)
+        let newTetrominoBase = currentTetromino.rotate(clockwise: clockwise)
+        let kicks = currentTetromino.getKicks(clockwise: clockwise)
         
-        if isValidTetromino(testTetromino: newTetromino)
+        for kick in kicks
         {
-            tetromino = newTetromino
+            let newTetromino = newTetrominoBase.moveBy(row: kick.Row, column: kick.Column)
+            if isValidTetromino(testTetromino: newTetromino)
+            {
+                tetromino = newTetromino
+                return
+            }
         }
     }
     
@@ -251,6 +257,11 @@ struct Tetromino
         return Tetromino(origin: origin, blockType: blockType, rotation: rotation + (clockwise ? 1 : -1))
     }
     
+    func getKicks(clockwise: Bool) -> [BlockLocation]
+    {
+        return Tetromino.getKicks(blockType: blockType, rotation: rotation, clockwise: clockwise)
+    }
+    
     static func getBlocks(blockType: BlockType, rotation: Int = 0) -> [BlockLocation]
     {
         let allBlocks = getAllBlocks(blockType: blockType)
@@ -314,6 +325,50 @@ struct Tetromino
         
         let origin = BlockLocation(Row: numberOfRows - 1 - maxRow, Column: (numberOfColumns - 1)/2)
         return Tetromino(origin: origin, blockType: blockType, rotation: 0)
+    }
+    
+    static func getKicks(blockType: BlockType, rotation: Int, clockwise: Bool) ->[BlockLocation]
+    {
+        let rotationCount = getAllBlocks(blockType: blockType).count
+        var index = rotation % rotationCount
+        
+        if index < 0
+        {
+            index += rotationCount
+        }
+        
+        var kicks = getAllKicks(blockType: blockType)[index]
+        if !clockwise
+        {
+            var counterKicks: [BlockLocation] = []
+            for kick in kicks
+            {
+                counterKicks.append(BlockLocation(Row: -1 * kick.Row, Column: -1 * kick.Column))
+            }
+        kicks = counterKicks
+       
+        }
+        
+        return kicks
+    }
+    
+    static func getAllKicks(blockType: BlockType) -> [[BlockLocation]]
+    {
+        switch blockType
+        {
+                case .o:
+                    return [[BlockLocation(Row: 0, Column: 0)]]
+                case .i:
+                    return [[BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: -2), BlockLocation(Row: 0, Column: 1), BlockLocation(Row: -1, Column: -2), BlockLocation(Row: 2, Column: -1)],
+                            [BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: -1), BlockLocation(Row: 0, Column: 2), BlockLocation(Row: 2, Column: -1), BlockLocation(Row: -1, Column: 2)],
+                            [BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: 2), BlockLocation(Row: 0, Column: -1), BlockLocation(Row: 1, Column: 2), BlockLocation(Row: -2, Column: -1)],
+                            [BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: 1), BlockLocation(Row: 0, Column: -2), BlockLocation(Row: -2, Column: 1), BlockLocation(Row: 1, Column: -2)]]
+                case .j, .l, .s, .z, .t:
+                    return [[BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: -1), BlockLocation(Row: 1, Column: -1), BlockLocation(Row: 0, Column: -2), BlockLocation(Row: -2, Column: -1)],
+                    [BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: 1), BlockLocation(Row: -1, Column: 1), BlockLocation(Row: 2, Column: 0), BlockLocation(Row: 1, Column: 2)],
+                    [BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: 1), BlockLocation(Row: 1, Column: 1), BlockLocation(Row: -2, Column: 0), BlockLocation(Row: -2, Column: 1)],
+                    [BlockLocation(Row: 0, Column: 0), BlockLocation(Row: 0, Column: -1), BlockLocation(Row: -1, Column: -1), BlockLocation(Row: 2, Column: 0), BlockLocation(Row: 2, Column: -1)]]
+        }
     }
 }
 

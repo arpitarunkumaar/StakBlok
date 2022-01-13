@@ -16,7 +16,7 @@ struct TetrisGameView: View
     {
         ZStack
         {
-            Color.black.ignoresSafeArea()
+        Color.black.ignoresSafeArea()
         GeometryReader{(geometry : GeometryProxy) in
         self.drawBoard(bouncingRect: geometry.size)
         }

@@ -14,8 +14,8 @@
             filePath = "StakBlok/Model/TetrisGameModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "288"
-            endingLineNumber = "288"
+            startingLineNumber = "299"
+            endingLineNumber = "299"
             landmarkName = "getAllBlocks(blockType:)"
             landmarkType = "7">
          </BreakpointContent>
